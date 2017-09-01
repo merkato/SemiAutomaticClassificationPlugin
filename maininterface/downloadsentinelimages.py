@@ -3,7 +3,7 @@
 /**************************************************************************************************************************
  SemiAutomaticClassificationPlugin
 
- The Semi-Automatic Classification Plugin for QGIS allows for the supervised classification of remote sensing images, 
+ The Semi-Automatic Classification Plugin for QGIS allows for the supervised classification of remote sensing images,
  providing tools for the download, the preprocessing and postprocessing of images.
 
 							 -------------------
@@ -11,23 +11,23 @@
 		copyright			: (C) 2012-2017 by Luca Congedo
 		email				: ing.congedoluca@gmail.com
 **************************************************************************************************************************/
- 
+
 /**************************************************************************************************************************
  *
  * This file is part of Semi-Automatic Classification Plugin
- * 
- * Semi-Automatic Classification Plugin is free software: you can redistribute it and/or modify it under 
- * the terms of the GNU General Public License as published by the Free Software Foundation, 
+ *
+ * Semi-Automatic Classification Plugin is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software Foundation,
  * version 3 of the License.
- * 
- * Semi-Automatic Classification Plugin is distributed in the hope that it will be useful, 
- * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
- * FITNESS FOR A PARTICULAR PURPOSE. 
+ *
+ * Semi-Automatic Classification Plugin is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License along with 
- * Semi-Automatic Classification Plugin. If not, see <http://www.gnu.org/licenses/>. 
- * 
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * Semi-Automatic Classification Plugin. If not, see <http://www.gnu.org/licenses/>.
+ *
 **************************************************************************************************************************/
 
 """
@@ -43,7 +43,7 @@ class DownloadSentinelImages:
 		self.checkAll = "No"
 		self.rbbrBndPol = QgsRubberBand(cfg.cnvs, 2)
 		cfg.ui.dateEdit_to_3.setDate(cfg.QDateSCP.currentDate())
-		
+
 	# add rubber band
 	def addRubberBandPolygon(self, pointUL, pointLR):
 		try:
@@ -65,12 +65,12 @@ class DownloadSentinelImages:
 			self.rbbrBndPol.setColor(clr)
 			#self.rbbrBndPol.setLineStyle(cfg.QtSCP.DotLine)
 			self.rbbrBndPol.setWidth(3)
-		
+
 	# clear canvas
 	def clearCanvasPoly(self):
 		self.rbbrBndPol.reset(True)
 		cfg.cnvs.refresh()
-	
+
 	# show area
 	def showArea(self):
 		pCrs = cfg.utls.getQGISCrs()
@@ -85,7 +85,7 @@ class DownloadSentinelImages:
 			self.addRubberBandPolygon(UL1, LR1)
 		except:
 			pass
-			
+
 	# set coordinates
 	def pointerClickLR(self, point):
 		pCrs = cfg.utls.getQGISCrs()
@@ -93,10 +93,10 @@ class DownloadSentinelImages:
 		iCrs = QgsCoordinateReferenceSystem()
 		iCrs.createFromProj4("+proj=longlat +datum=WGS84 +no_defs")
 		point1 = cfg.utls.projectPointCoordinates(point, pCrs, iCrs)
-		cfg.ui.LX_lineEdit_5.setText(str(point1.x()))
-		cfg.ui.LY_lineEdit_5.setText(str(point1.y()))
+		cfg.ui.LX_lineEdit_5.setText(point1.x())
+		cfg.ui.LY_lineEdit_5.setText(point1.y())
 		self.showArea()
-		
+
 	# set coordinates
 	def pointerClickUL(self, point):
 		pCrs = cfg.utls.getQGISCrs()
@@ -104,10 +104,10 @@ class DownloadSentinelImages:
 		iCrs = QgsCoordinateReferenceSystem()
 		iCrs.createFromProj4("+proj=longlat +datum=WGS84 +no_defs")
 		point1 = cfg.utls.projectPointCoordinates(point, pCrs, iCrs)
-		cfg.ui.UX_lineEdit_5.setText(str(point1.x()))
-		cfg.ui.UY_lineEdit_5.setText(str(point1.y()))
+		cfg.ui.UX_lineEdit_5.setText(point1.x())
+		cfg.ui.UY_lineEdit_5.setText(point1.y())
 		self.showArea()
-		
+
 	# Activate pointer
 	def pointerActive(self):
 		# connect to click
@@ -117,25 +117,25 @@ class DownloadSentinelImages:
 		c = cfg.QtGuiSCP.QCursor(px)
 		cfg.cnvs.setCursor(c)
 		# logger
-		cfg.utls.logCondition(str(__name__) + "-" + str(cfg.inspectSCP.stack()[0][3])+ " " + cfg.utls.lineOfCode(), "pointer active: Sentinel")
-		
+		cfg.utls.logCondition(__name__ + "-" + cfg.inspectSCP.stack()[0][3]+ " " + cfg.utls.lineOfCode(), "pointer active: Sentinel")
+
 	# left click pointer
 	def pointerLeftClick(self, point):
 		self.pointerClickUL(point)
-			
+
 	# right click pointer
 	def pointerRightClick(self, point):
 		self.pointerClickLR(point)
-		
+
 	# find images
 	def findImages(self):
 		self.queryDatabase()
-		
+
 	# service
 	def rememberService(self):
 		service = cfg.ui.sentinel_service_lineEdit.text()
 		cfg.sets.setQGISRegSetting(cfg.regSciHubService, service)
-		
+
 	# reset service
 	def resetService(self):
 		cfg.ui.sentinel_service_lineEdit.setText(cfg.SciHubServiceNm)
@@ -148,21 +148,21 @@ class DownloadSentinelImages:
 			pswd = cfg.utls.encryptPassword(cfg.ui.password_scihub_lineEdit.text())
 			cfg.sets.setQGISRegSetting(cfg.regSciHubUser, user)
 			cfg.sets.setQGISRegSetting(cfg.regSciHubPass, pswd)
-			
+
 	def rememberUserCheckbox(self):
 		if cfg.ui.remember_user_checkBox.isChecked():
 			self.rememberUser()
 		else:
 			cfg.sets.setQGISRegSetting(cfg.regSciHubUser, "")
 			cfg.sets.setQGISRegSetting(cfg.regSciHubPass, "")
-		
+
 	# download image preview from Amazon
 	def downloadPreviewAmazon(self, imgID, imgIDN, imgIDT, imgIDTT, acquisitionDate, progress = None):
 		url = "http://sentinel-s2-l1c.s3.amazonaws.com/tiles/" + imgIDN + "/" + imgIDT + "/" + imgIDTT + "/" + acquisitionDate[0:4] + "/" + acquisitionDate[5:7].lstrip('0') + "/" + acquisitionDate[8:10].lstrip('0') + "/0/preview.jp2"
 		check = cfg.utls.downloadFile(url, cfg.tmpDir + "//" + imgID + '_p.jp2', imgID, progress)
 		return check
-		
-	# display granule preview	
+
+	# display granule preview
 	def displayGranules(self):
 		tW = cfg.ui.sentinel_images_tableWidget
 		ids = []
@@ -176,8 +176,8 @@ class DownloadSentinelImages:
 			cfg.cnvs.setRenderFlag(False)
 			progress = 0
 			for i in id:
-				imgNm = str(tW.item(i, 1).text())
-				acquisitionDate = str(tW.item(i, 2).text())
+				imgNm = tW.item(i, 1).text()
+				acquisitionDate = tW.item(i, 2).text()
 				if imgNm[0:4] == "L1C_":
 					imgID = imgNm + '_p.jp2'
 				else:
@@ -185,7 +185,7 @@ class DownloadSentinelImages:
 				url = str(tW.item(i, 11).text())
 				if cfg.osSCP.path.isfile(cfg.tmpDir + "//" + imgID):
 					l = cfg.utls.selectLayerbyName(imgID)
-					if l is not None:		
+					if l is not None:
 						cfg.lgnd.setLayerVisible(l, True)
 						cfg.utls.moveLayerTop(l)
 					else:
@@ -197,12 +197,12 @@ class DownloadSentinelImages:
 						checkA = self.downloadPreviewAmazon(imgNm[0:-7] , imgNm[0:-7][-5:-3], imgNm[0:-7][-3], imgNm[0:-7][-2:], acquisitionDate, progress)
 					if checkA != "Yes":
 						# single granule
-						if "MB" in str(tW.item(i, 9).text()):
-							min_lat = str(tW.item(i, 5).text())
-							min_lon = str(tW.item(i, 6).text())
-							max_lat = str(tW.item(i, 7).text())
-							max_lon = str(tW.item(i, 8).text())
-							jpg = str(tW.item(i, 10).text())
+						if "MB" in tW.item(i, 9).text():
+							min_lat = tW.item(i, 5).text()
+							min_lon = tW.item(i, 6).text()
+							max_lat = tW.item(i, 7).text()
+							max_lon = tW.item(i, 8).text()
+							jpg = tW.item(i, 10).text()
 							self.downloadThumbnail(imgID, min_lat, min_lon, max_lat, max_lon, jpg, progress)
 							if cfg.osSCP.path.isfile(cfg.tmpDir + "//" + imgID + ".vrt"):
 								r = cfg.utls.addRasterLayer(cfg.tmpDir + "//" + imgID + ".vrt", imgID.replace(".vrt",""))
@@ -216,9 +216,9 @@ class DownloadSentinelImages:
 			cfg.cnvs.setRenderFlag(True)
 			cfg.cnvs.refresh()
 			# logger
-			cfg.utls.logCondition(str(__name__) + "-" + str(cfg.inspectSCP.stack()[0][3])+ " " + cfg.utls.lineOfCode(), " granules displayed")
-			
-	# display image preview	
+			cfg.utls.logCondition(__name__ + "-" + cfg.inspectSCP.stack()[0][3]+ " " + cfg.utls.lineOfCode(), " granules displayed")
+
+	# display image preview
 	def displayImages(self):
 		tW = cfg.ui.sentinel_images_tableWidget
 		ids = []
@@ -232,15 +232,15 @@ class DownloadSentinelImages:
 			cfg.cnvs.setRenderFlag(False)
 			progress = 0
 			for i in id:
-				imgID = str(tW.item(i, 0).text())
-				min_lat = str(tW.item(i, 5).text())
-				min_lon = str(tW.item(i, 6).text())
-				max_lat = str(tW.item(i, 7).text())
-				max_lon = str(tW.item(i, 8).text())
-				jpg = str(tW.item(i, 10).text())
+				imgID = tW.item(i, 0).text()
+				min_lat = tW.item(i, 5).text()
+				min_lon = tW.item(i, 6).text()
+				max_lat = tW.item(i, 7).text()
+				max_lon = tW.item(i, 8).text()
+				jpg = tW.item(i, 10).text()
 				if cfg.osSCP.path.isfile(cfg.tmpDir + "//" + imgID + ".vrt"):
 					l = cfg.utls.selectLayerbyName(imgID + ".vrt")
-					if l is not None:		
+					if l is not None:
 						cfg.lgnd.setLayerVisible(l, True)
 						cfg.utls.moveLayerTop(l)
 					else:
@@ -256,8 +256,8 @@ class DownloadSentinelImages:
 			cfg.cnvs.setRenderFlag(True)
 			cfg.cnvs.refresh()
 			# logger
-			cfg.utls.logCondition(str(__name__) + "-" + str(cfg.inspectSCP.stack()[0][3])+ " " + cfg.utls.lineOfCode(), " thumbnails displayed")
-		
+			cfg.utls.logCondition(__name__ + "-" + cfg.inspectSCP.stack()[0][3]+ " " + cfg.utls.lineOfCode(), " thumbnails displayed")
+
 	# download file
 	def downloadFile(self, url, output, progress = None):
 		user = cfg.ui.user_scihub_lineEdit.text()
@@ -266,7 +266,7 @@ class DownloadSentinelImages:
 		topLevelUrl = cfg.ui.sentinel_service_lineEdit.text()
 		topUrl =topLevelUrl
 		# logger
-		cfg.utls.logCondition(str(__name__) + "-" + str(cfg.inspectSCP.stack()[0][3])+ " " + cfg.utls.lineOfCode(), " " + topLevelUrl)
+		cfg.utls.logCondition(__name__ + "-" + cfg.inspectSCP.stack()[0][3]+ " " + cfg.utls.lineOfCode(), " " + topLevelUrl)
 		# response = cfg.utls.passwordConnect(user, password, topUrl + '/search?q=', topLevelUrl, None, None, "Yes")
 		# if response == "No":
 			# cfg.mx.msgErr40()
@@ -278,7 +278,7 @@ class DownloadSentinelImages:
 		else:
 			cfg.mx.msgErr40()
 			return "No"
-	
+
 	# download image preview
 	def downloadThumbnail(self, imgID, min_lat, min_lon, max_lat, max_lon, imageJPG, progress = None):
 		user = cfg.ui.user_scihub_lineEdit.text()
@@ -300,7 +300,7 @@ class DownloadSentinelImages:
 			elif cLon >= 9.0 and cLon < 21.0 and cLat >= 72.0 and cLat < 84.0:
 				zone = 33
 			elif cLon >= 21.0 and cLon < 33.0 and cLat >= 72.0 and cLat < 84.0:
-				zone = 35		
+				zone = 35
 			elif cLon >= 33.0 and cLon < 42.0 and cLat >= 72.0 and cLat < 84.0:
 				zone = 37
 			UL = QgsPoint(float(min_lon), float(max_lat))
@@ -309,13 +309,13 @@ class DownloadSentinelImages:
 			wgsCrs = QgsCoordinateReferenceSystem()
 			wgsCrs.createFromProj4("+proj=longlat +datum=WGS84 +no_defs")
 			iCrs = QgsCoordinateReferenceSystem()
-			iCrs.createFromProj4("+proj=utm +zone="+ str(zone) + " +datum=WGS84 +units=m +no_defs")
+			iCrs.createFromProj4("+proj=utm +zone="+ zone + " +datum=WGS84 +units=m +no_defs")
 			UL1 = cfg.utls.projectPointCoordinates(UL, wgsCrs, iCrs)
 			LR1 = cfg.utls.projectPointCoordinates(LR, wgsCrs, iCrs)
 			if UL1 != False and LR1 != False:
 				cfg.utls.getGDALForMac()
 				# georeference thumbnail
-				a = cfg.gdalPath + "gdal_translate -of VRT -a_ullr " + str(UL1.x()) + " " + str(UL1.y()) + " " + str(LR1.x()) + " " + str(LR1.y()) + ' -a_srs "+proj=utm +zone=' + str(zone) + ' +datum=WGS84 +units=m +no_defs" ' + cfg.tmpDir + "//" + imgID + "_thumb.jpg " + cfg.tmpDir + "//" + imgID + ".vrt"
+				a = cfg.gdalPath + "gdal_translate -of VRT -a_ullr " + UL1.x() + " " + UL1.y() + " " + LR1.x() + " " + LR1.y() + ' -a_srs "+proj=utm +zone=' + str(zone) + ' +datum=WGS84 +units=m +no_defs" ' + cfg.tmpDir + "//" + imgID + "_thumb.jpg " + cfg.tmpDir + "//" + imgID + ".vrt"
 				try:
 					sP = cfg.subprocessSCP.Popen(a, shell=True, stdout=cfg.subprocessSCP.PIPE, stderr=cfg.subprocessSCP.PIPE)
 					sP.wait()
@@ -326,25 +326,25 @@ class DownloadSentinelImages:
 						cfg.mx.msgBarError(cfg.QtGuiSCP.QApplication.translate("semiautomaticclassificationplugin", "Error"), err)
 						st = "Yes"
 						# logger
-						cfg.utls.logCondition(str(__name__) + "-" + str(cfg.inspectSCP.stack()[0][3])+ " " + cfg.utls.lineOfCode(), " GDAL error:: " + str(err) )
+						cfg.utls.logCondition(__name__ + "-" + cfg.inspectSCP.stack()[0][3]+ " " + cfg.utls.lineOfCode(), " GDAL error:: " + err )
 				# in case of errors
 				except Exception, err:
 					# logger
-					cfg.utls.logCondition(str(__name__) + "-" + (cfg.inspectSCP.stack()[0][3])+ " " + cfg.utls.lineOfCode(), " ERROR exception: " + str(err))
+					cfg.utls.logCondition(__name__ + "-" + cfg.inspectSCP.stack()[0][3]+ " " + cfg.utls.lineOfCode(), " ERROR exception: " + err)
 					sP = cfg.subprocessSCP.Popen(a, shell=True)
 					sP.wait()
 				# logger
-				cfg.utls.logCondition(str(__name__) + "-" + str(cfg.inspectSCP.stack()[0][3])+ " " + cfg.utls.lineOfCode(), " thumbnail downloaded" + str(imgID))
+				cfg.utls.logCondition(__name__ + "-" + cfg.inspectSCP.stack()[0][3]+ " " + cfg.utls.lineOfCode(), " thumbnail downloaded" + imgID)
 			else:
 				cfg.mx.msgErr41()
 		else:
 			cfg.mx.msgErr40()
-	
+
 	# remove highlighted images from table
 	def removeImageFromTable(self):
 		tW = cfg.ui.sentinel_images_tableWidget
 		cfg.utls.removeRowsFromTable(tW)
-			
+
 	# download images in table
 	def downloadImages(self):
 		tW = cfg.ui.sentinel_images_tableWidget
@@ -353,22 +353,22 @@ class DownloadSentinelImages:
 			d = cfg.utls.getExistingDirectory(None , cfg.QtGuiSCP.QApplication.translate("semiautomaticclassificationplugin", "Download the images in the table (requires internet connection)"))
 			if len(d) > 0:
 				self.downloadSentinelImages(d)
-		
+
 	# check all bands
 	def checkAllBands(self):
 		if self.checkAll == "Yes":
 			for i in range(1, 14):
-				t = "cfg.ui.checkBoxs_band_" + str(i) + ".setCheckState(2)"
+				t = "cfg.ui.checkBoxs_band_" + i + ".setCheckState(2)"
 				eval(t)
 			cfg.ui.ancillary_data_checkBox.setCheckState(2)
 			self.checkAll = "No"
 		else:
 			for i in range(1, 14):
-				t = "cfg.ui.checkBoxs_band_" + str(i) + ".setCheckState(0)"
+				t = "cfg.ui.checkBoxs_band_" + i + ".setCheckState(0)"
 				eval(t)
 			cfg.ui.ancillary_data_checkBox.setCheckState(0)
 			self.checkAll = "Yes"
-		
+
 	# check band download
 	def checkImageBands(self, checkbox, bandNumber, imgID, imgName, imgName2, acquisitionDate, outputDirectory, exporter, progress, outFilesList, linksList):
 		if cfg.actionCheck == "Yes":
@@ -423,7 +423,7 @@ class DownloadSentinelImages:
 		else:
 			cfg.uiUtls.removeProgressBar()
 			return "No"
-		
+
 	# download images
 	def downloadSentinelImages(self, outputDirectory, exporter = "No"):
 		cfg.uiUtls.addProgressBar()
@@ -488,7 +488,7 @@ class DownloadSentinelImages:
 							urlL1 = topUrl + "('" +imgID  + "')/Nodes('" +imgName + ".SAFE')/Nodes('" + imgName.replace('_PRD_MSIL1C_', '_MTD_SAFL1C_') + ".xml')/$value"
 							outFile1 = outputDirectory + "//" + imgName2[0:-7] + "//" + imgName.replace('_PRD_MSIL1C_', '_MTD_SAFL1C_') + '.xml'
 							urlL2 = topUrl + "('" +imgID  + "')/Nodes('" +imgName + ".SAFE')/Nodes('GRANULE')/Nodes('" + imgName2 + "')/Nodes('" + imgName2[0:-7].replace('_MSI_L1C_', '_MTD_L1C_') + ".xml')/$value"
-							outFile2 = outputDirectory + "//" + imgName2[0:-7] + "//" + imgName2[0:-7].replace('_MSI_L1C_', '_MTD_L1C_')  + '.xml'		
+							outFile2 = outputDirectory + "//" + imgName2[0:-7] + "//" + imgName2[0:-7].replace('_MSI_L1C_', '_MTD_L1C_')  + '.xml'
 							# download QI
 							urlL3 = topUrl + "('" +imgID  + "')/Nodes('" +imgName + ".SAFE')/Nodes('GRANULE')/Nodes('" + imgName2 + "')/Nodes('QI_DATA')/Nodes('" + imgName2[0:-7].replace('_MSI_L1C_TL_', '_MSK_CLOUDS_')  + "_B00_MSIL1C.gml')/$value"
 							outFile3 = outputDirectory + "//" + imgName2[0:-7] + "//" + imgName2[0:-7].replace('_MSI_L1C_TL_', '_MSK_CLOUDS_') + '_B00_MSIL1C.gml'
@@ -540,7 +540,7 @@ class DownloadSentinelImages:
 		if exporter == "No":
 			cfg.utls.finishSound()
 		return links
-					
+
 	# export links
 	def exportLinks(self):
 		tW = cfg.ui.sentinel_images_tableWidget
@@ -557,7 +557,7 @@ class DownloadSentinelImages:
 						l.write(t + "\n")
 					l.close()
 					cfg.uiUtls.removeProgressBar()
-					
+
 	# read database
 	def queryDatabase(self):
 		QdateFrom = cfg.ui.dateEdit_from_3.date()
@@ -584,7 +584,7 @@ class DownloadSentinelImages:
 				cfg.mx.msgWar18()
 		except Exception, err:
 			# logger
-			cfg.utls.logCondition(str(__name__) + "-" + str(cfg.inspectSCP.stack()[0][3])+ " " + cfg.utls.lineOfCode(), " ERROR exception: " + str(err))
+			cfg.utls.logCondition(str(__name__) + "-" + str(cfg.inspectSCP.stack()[0][3])+ " " + cfg.utls.lineOfCode(), " ERROR exception: " + err)
 			cfg.mx.msg23()
 			return "No"
 		cfg.uiUtls.addProgressBar()
@@ -608,13 +608,13 @@ class DownloadSentinelImages:
 				cfg.uiUtls.removeProgressBar()
 				return "No"
 			#info = response.info()
-			xml = response	
+			xml = response
 			tW.setSortingEnabled(False)
 			try:
 				doc = cfg.minidomSCP.parseString(xml)
 			except Exception, err:
 				# logger
-				cfg.utls.logCondition(str(__name__) + "-" + str(cfg.inspectSCP.stack()[0][3])+ " " + cfg.utls.lineOfCode(), " ERROR exception: " + str(err))
+				cfg.utls.logCondition(str(__name__) + "-" + str(cfg.inspectSCP.stack()[0][3])+ " " + cfg.utls.lineOfCode(), " ERROR exception: " + err)
 				if "HTTP Status 500" in xml:
 					cfg.mx.msgWar24()
 				else:
@@ -678,7 +678,7 @@ class DownloadSentinelImages:
 							doc2 = cfg.minidomSCP.parseString(xml2)
 							imgName2Tag = doc2.getElementsByTagName("IMAGE_FILE")[0]
 							imgName2 = imgName2Tag.firstChild.data.split("/")[1]
-							if cfg.actionCheck == "Yes":								
+							if cfg.actionCheck == "Yes":
 								for filter in imageFindList:
 									if filter in imgName.lower() or filter in imgName2.lower():
 										acZoneI = imgName2.split("_")[1][1:]
@@ -704,7 +704,7 @@ class DownloadSentinelImages:
 										newV = "Yes"
 						except Exception, err:
 							# logger
-							cfg.utls.logCondition(str(__name__) + "-" + (cfg.inspectSCP.stack()[0][3])+ " " + cfg.utls.lineOfCode(), " ERROR exception: " + str(err))
+							cfg.utls.logCondition(str(__name__) + "-" + (cfg.inspectSCP.stack()[0][3])+ " " + cfg.utls.lineOfCode(), " ERROR exception: " + err)
 						if newV is None:
 							# old xml version
 							try:
@@ -739,8 +739,8 @@ class DownloadSentinelImages:
 												cfg.utls.addTableItem(tW, imgID, c, 12)
 							except Exception, err:
 								# logger
-								cfg.utls.logCondition(str(__name__) + "-" + (cfg.inspectSCP.stack()[0][3])+ " " + cfg.utls.lineOfCode(), " ERROR exception: " + str(err))
-		tW.setSortingEnabled(True)		
+								cfg.utls.logCondition(str(__name__) + "-" + (cfg.inspectSCP.stack()[0][3])+ " " + cfg.utls.lineOfCode(), " ERROR exception: " + err)
+		tW.setSortingEnabled(True)
 		cfg.uiUtls.removeProgressBar()
 		self.clearCanvasPoly()
 		# logger
@@ -753,14 +753,13 @@ class DownloadSentinelImages:
 		if a == "Yes":
 			tW = cfg.ui.sentinel_images_tableWidget
 			cfg.utls.clearTable(tW)
-			
+
 	# show hide area radio button
 	def showHideArea(self):
 		try:
-			if cfg.ui.show_area_radioButton.isChecked():				
+			if cfg.ui.show_area_radioButton.isChecked():
 				self.showArea()
 			else:
 				self.clearCanvasPoly()
 		except:
 			pass
-			

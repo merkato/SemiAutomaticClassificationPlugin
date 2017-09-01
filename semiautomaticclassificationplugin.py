@@ -42,7 +42,7 @@ import datetime
 import subprocess
 import numpy as np
 import urllib
-import urllib2
+import urllib.request
 import ssl
 from cookielib import CookieJar
 import itertools
@@ -186,7 +186,7 @@ class SemiAutomaticClassificationPlugin:
 			cfg.ogrSCP = ogr
 			cfg.osrSCP = osr
 			cfg.urllibSCP = urllib
-			cfg.urllib2SCP = urllib2
+			cfg.urllib2SCP = urllib.request
 			cfg.sslSCP = ssl
 			cfg.CookieJarSCP = CookieJar
 			cfg.reSCP = re

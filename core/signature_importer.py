@@ -3,7 +3,7 @@
 /**************************************************************************************************************************
  SemiAutomaticClassificationPlugin
 
- The Semi-Automatic Classification Plugin for QGIS allows for the supervised classification of remote sensing images, 
+ The Semi-Automatic Classification Plugin for QGIS allows for the supervised classification of remote sensing images,
  providing tools for the download, the preprocessing and postprocessing of images.
 
 							 -------------------
@@ -11,33 +11,33 @@
 		copyright			: (C) 2012-2017 by Luca Congedo
 		email				: ing.congedoluca@gmail.com
 **************************************************************************************************************************/
- 
+
 /**************************************************************************************************************************
  *
  * This file is part of Semi-Automatic Classification Plugin
- * 
- * Semi-Automatic Classification Plugin is free software: you can redistribute it and/or modify it under 
- * the terms of the GNU General Public License as published by the Free Software Foundation, 
+ *
+ * Semi-Automatic Classification Plugin is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software Foundation,
  * version 3 of the License.
- * 
- * Semi-Automatic Classification Plugin is distributed in the hope that it will be useful, 
- * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
- * FITNESS FOR A PARTICULAR PURPOSE. 
+ *
+ * Semi-Automatic Classification Plugin is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License along with 
- * Semi-Automatic Classification Plugin. If not, see <http://www.gnu.org/licenses/>. 
- * 
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * Semi-Automatic Classification Plugin. If not, see <http://www.gnu.org/licenses/>.
+ *
 **************************************************************************************************************************/
 
 """
 
-cfg = __import__(str(__name__).split(".")[0] + ".core.config", fromlist=[''])
+cfg = __import__((__name__).split(".")[0] + ".core.config", fromlist=[''])
 
 class Signature_Importer:
 	def __init__(self):
 		pass
-		
+
 	# import USGS spectral library (http://speclab.cr.usgs.gov/spectral-lib.html)
 	def USGSLibrary(self, libraryPath):
 		if cfg.osSCP.path.isfile(libraryPath):
@@ -73,12 +73,12 @@ class Signature_Importer:
 					b = b + 1
 				self.addLibraryToSignatureList()
 				# logger
-				cfg.utls.logCondition(str(cfg.inspectSCP.stack()[0][3])+ " " + cfg.utls.lineOfCode(), " spectral library imported" + str(file[0]))
+				cfg.utls.logCondition(cfg.inspectSCP.stack()[0][3]+ " " + cfg.utls.lineOfCode(), " spectral library imported" + file[0])
 			else:
 				cfg.mx.msgErr17()
 				# logger
-				cfg.utls.logCondition(str(cfg.inspectSCP.stack()[0][3])+ " " + cfg.utls.lineOfCode(), " spectral library " + str(file[0]))
-					
+				cfg.utls.logCondition(cfg.inspectSCP.stack()[0][3]+ " " + cfg.utls.lineOfCode(), " spectral library " + file[0])
+
 	# import ASTER spectral library (http://speclib.jpl.nasa.gov/search-1)
 	def ASTERLibrary(self, libraryPath):
 		if cfg.osSCP.path.isfile(libraryPath):
@@ -113,12 +113,12 @@ class Signature_Importer:
 					b = b + 1
 				self.addLibraryToSignatureList()
 				# logger
-				cfg.utls.logCondition(str(cfg.inspectSCP.stack()[0][3])+ " " + cfg.utls.lineOfCode(), " spectral library imported" + str(file[0]))
+				cfg.utls.logCondition(cfg.inspectSCP.stack()[0][3]+ " " + cfg.utls.lineOfCode(), " spectral library imported" + file[0])
 			else:
 				cfg.mx.msgErr17()
 				# logger
-				cfg.utls.logCondition(str(cfg.inspectSCP.stack()[0][3])+ " " + cfg.utls.lineOfCode(), " spectral library " + str(file[0]))
-		
+				cfg.utls.logCondition(cfg.inspectSCP.stack()[0][3]+ " " + cfg.utls.lineOfCode(), " spectral library " + file[0])
+
 	# import generic CSV spectral library (first line: wavelength, reflectance, standardDeviation, waveLengthUnit)
 	def CSVLibrary(self, libraryPath):
 		if cfg.osSCP.path.isfile(libraryPath):
@@ -166,7 +166,7 @@ class Signature_Importer:
 			except:
 				self.addLibraryToSignatureList()
 			# logger
-			cfg.utls.logCondition(str(cfg.inspectSCP.stack()[0][3])+ " " + cfg.utls.lineOfCode(), " spectral library imported" + str(file[0]))
+			cfg.utls.logCondition(cfg.inspectSCP.stack()[0][3]+ " " + cfg.utls.lineOfCode(), " spectral library imported" + file[0])
 
 	# add library values to signature list
 	def addLibraryToSignatureList(self, unit = None):
@@ -179,7 +179,7 @@ class Signature_Importer:
 			unit = cfg.unitMicro
 		cfg.utls.ROIStatisticsToSignature("No", macroclassID, macroclassInfo, classID, classInfo, unit)
 		cfg.classD.ROIListTable(cfg.trnLay, cfg.uidc.signature_list_tableWidget)
-		
+
 	# open a shapefile
 	def openShapefileI(self):
 		shpFile = cfg.utls.getOpenFileName(None , cfg.QtGuiSCP.QApplication.translate("semiautomaticclassificationplugin", "Select a shapefile"), "", "Shapefile (*.shp)")
@@ -195,5 +195,4 @@ class Signature_Importer:
 			cfg.ui.C_Info_combo.addItems(fields)
 			cfg.ui.select_shapefile_label.setText(shpFile)
 			# logger
-			cfg.utls.logCondition(str(cfg.inspectSCP.stack()[0][3])+ " " + cfg.utls.lineOfCode(), " open Shapefile")
-			
+			cfg.utls.logCondition(cfg.inspectSCP.stack()[0][3]+ " " + cfg.utls.lineOfCode(), " open Shapefile")
