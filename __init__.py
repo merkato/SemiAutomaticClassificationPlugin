@@ -3,7 +3,7 @@
 /**************************************************************************************************************************
  SemiAutomaticClassificationPlugin
 
- The Semi-Automatic Classification Plugin for QGIS allows for the supervised classification of remote sensing images, 
+ The Semi-Automatic Classification Plugin for QGIS allows for the supervised classification of remote sensing images,
  providing tools for the download, the preprocessing and postprocessing of images.
 
 							 -------------------
@@ -11,23 +11,23 @@
 		copyright			: (C) 2012-2017 by Luca Congedo
 		email				: ing.congedoluca@gmail.com
 **************************************************************************************************************************/
- 
+
 /**************************************************************************************************************************
  *
  * This file is part of Semi-Automatic Classification Plugin
- * 
- * Semi-Automatic Classification Plugin is free software: you can redistribute it and/or modify it under 
- * the terms of the GNU General Public License as published by the Free Software Foundation, 
+ *
+ * Semi-Automatic Classification Plugin is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software Foundation,
  * version 3 of the License.
- * 
- * Semi-Automatic Classification Plugin is distributed in the hope that it will be useful, 
- * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
- * FITNESS FOR A PARTICULAR PURPOSE. 
+ *
+ * Semi-Automatic Classification Plugin is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License along with 
- * Semi-Automatic Classification Plugin. If not, see <http://www.gnu.org/licenses/>. 
- * 
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * Semi-Automatic Classification Plugin. If not, see <http://www.gnu.org/licenses/>.
+ *
 **************************************************************************************************************************/
 
 """
@@ -50,7 +50,7 @@ def icon():
 
 
 def qgisMinimumVersion():
-    return "2.0"
+    return "2.8"
 
 def author():
     return "Luca Congedo"
@@ -62,7 +62,7 @@ def category():
     return "Raster"
 
 def classFactory(iface):
-    from semiautomaticclassificationplugin import SemiAutomaticClassificationPlugin
+    from . semiautomaticclassificationplugin import SemiAutomaticClassificationPlugin
     return SemiAutomaticClassificationPlugin(iface)
 
 def homepage():
@@ -70,7 +70,6 @@ def homepage():
 
 def tracker():
     return "https://github.com/semiautomaticgit/SemiAutomaticClassificationPlugin/issues"
-	
+
 def repository():
 	return "https://github.com/semiautomaticgit/SemiAutomaticClassificationPlugin"
-

@@ -3,7 +3,7 @@
 /**************************************************************************************************************************
  SemiAutomaticClassificationPlugin
 
- The Semi-Automatic Classification Plugin for QGIS allows for the supervised classification of remote sensing images, 
+ The Semi-Automatic Classification Plugin for QGIS allows for the supervised classification of remote sensing images,
  providing tools for the download, the preprocessing and postprocessing of images.
 
 							 -------------------
@@ -11,23 +11,23 @@
 		copyright			: (C) 2012-2017 by Luca Congedo
 		email				: ing.congedoluca@gmail.com
 **************************************************************************************************************************/
- 
+
 /**************************************************************************************************************************
  *
  * This file is part of Semi-Automatic Classification Plugin
- * 
- * Semi-Automatic Classification Plugin is free software: you can redistribute it and/or modify it under 
- * the terms of the GNU General Public License as published by the Free Software Foundation, 
+ *
+ * Semi-Automatic Classification Plugin is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software Foundation,
  * version 3 of the License.
- * 
- * Semi-Automatic Classification Plugin is distributed in the hope that it will be useful, 
- * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
- * FITNESS FOR A PARTICULAR PURPOSE. 
+ *
+ * Semi-Automatic Classification Plugin is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License along with 
- * Semi-Automatic Classification Plugin. If not, see <http://www.gnu.org/licenses/>. 
- * 
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * Semi-Automatic Classification Plugin. If not, see <http://www.gnu.org/licenses/>.
+ *
 **************************************************************************************************************************/
 
 """
@@ -55,10 +55,10 @@ import xml.etree.cElementTree as ET
 from xml.dom import minidom
 import hashlib
 # Import the PyQt libraries
-from PyQt4 import QtCore, QtGui
-from PyQt4.QtCore import Qt, QObject, SIGNAL, QFileInfo, QSettings, QDir, QDate, QVariant
-from PyQt4.QtGui import QApplication
-from PyQt4.QtNetwork import QNetworkRequest
+from qgis.PyQt import QtCore, QtGui
+from qgis.PyQt.QtCore import Qt, QObject, SIGNAL, QFileInfo, QSettings, QDir, QDate, QVariant
+from qgis.PyQt.QtGui import QApplication
+from qgis.PyQt.QtNetwork import QNetworkRequest
 # Import the QGIS libraries
 import qgis.core as qgisCore
 from qgis.gui import *
@@ -150,9 +150,9 @@ if PluginCheck == "Yes":
 		from matplotlib.ticker import MaxNLocator
 		import matplotlib.pyplot as mplplt
 		import matplotlib.colors as mplcolors
-	except Exception, err:
+	except Exception as err:
 		cfg.testMatplotlibV = err
-		
+
 class SemiAutomaticClassificationPlugin:
 
 	def __init__(self, iface):
@@ -210,7 +210,7 @@ class SemiAutomaticClassificationPlugin:
 			# reference to map canvas
 			cfg.cnvs = iface.mapCanvas()
 			# reference to legend
-			cfg.lgnd = iface.legendInterface()		
+			cfg.lgnd = iface.legendInterface()
 			# create the dialog
 			cfg.dlg = SemiAutomaticClassificationPluginDialog()
 			# reference to ui
@@ -316,14 +316,14 @@ class SemiAutomaticClassificationPlugin:
 			tmpDir = cfg.utls.getTempDirectory()
 			cfg.ui.temp_directory_label.setText(tmpDir)
 			""" locale """
-			lclPth = "" 
-			if cfg.QFileInfoSCP(cfg.plgnDir).exists(): 
-				lclPth = cfg.plgnDir + "/i18n/semiautomaticclassificationplugin_" + lclNm + ".qm" 
-			if cfg.QFileInfoSCP(lclPth).exists(): 
-				trnsltr = cfg.QtCoreSCP.QTranslator() 
+			lclPth = ""
+			if cfg.QFileInfoSCP(cfg.plgnDir).exists():
+				lclPth = cfg.plgnDir + "/i18n/semiautomaticclassificationplugin_" + lclNm + ".qm"
+			if cfg.QFileInfoSCP(lclPth).exists():
+				trnsltr = cfg.QtCoreSCP.QTranslator()
 				cfg.QtCoreSCP.QTextCodec.setCodecForTr(cfg.QtCoreSCP.QTextCodec.codecForName('utf-8'))
-				trnsltr.load(lclPth) 
-				if cfg.QtCoreSCP.qVersion() > '4.3.3': 
+				trnsltr.load(lclPth)
+				if cfg.QtCoreSCP.qVersion() > '4.3.3':
 					cfg.QtCoreSCP.QCoreApplication.installTranslator(trnsltr)
 			""" info """
 			cfg.sysSCPInfo = str(" SemiAutomaticClass " + semiautomaticclassVersion() + " - QGIS v. " + str(cfg.QGISVer) + " L:" + lclNm + " - OS " + str(cfg.sysSCPNm) + " - 64bit =" + cfg.sysSCP64bit)
@@ -332,8 +332,8 @@ class SemiAutomaticClassificationPlugin:
 				cfg.gdalSCP.SetConfigOption('GDAL_NUM_THREADS', 'ALL_CPUS')
 			except:
 				pass
-			
-	# read registry keys 
+
+	# read registry keys
 	def registryKeys(self):
 		""" registry keys """
 		cfg.logSetVal = cfg.utls.readRegistryKeys(cfg.regLogKey, cfg.logSetVal)
@@ -369,7 +369,7 @@ class SemiAutomaticClassificationPlugin:
 		cfg.rasterDataType = cfg.utls.readRegistryKeys(cfg.regRasterDataType, cfg.rasterDataType)
 		cfg.expressionListBC = cfg.utls.readRegistryKeys(cfg.regExpressionListBC, cfg.expressionListBC)
 		cfg.soundVal = cfg.utls.readRegistryKeys(cfg.regSound, cfg.soundVal)
-		
+
 	def initGui(self):
 		if PluginCheck == "Yes":
 			try:
@@ -395,8 +395,8 @@ class SemiAutomaticClassificationPlugin:
 				qgisUtils.iface.messageBar().pushMessage("Semi-Automatic Classification Plugin", QApplication.translate("semiautomaticclassificationplugin", "Please, restart QGIS for executing the Semi-Automatic Classification Plugin. Possible missing dependecies: " + msg), level=QgsMessageBar.INFO)
 				return
 			cfg.ipt.loadInputToolbar()
-			cfg.algMinDist = cfg.uidc.algorithm_combo.itemText(0) 
-			cfg.algML = cfg.uidc.algorithm_combo.itemText(1) 
+			cfg.algMinDist = cfg.uidc.algorithm_combo.itemText(0)
+			cfg.algML = cfg.uidc.algorithm_combo.itemText(1)
 			cfg.algSAM = cfg.uidc.algorithm_combo.itemText(2)
 			cfg.algName = cfg.algMinDist
 			cfg.uidc.algorithm_combo.setCurrentIndex(0)
@@ -583,7 +583,7 @@ class SemiAutomaticClassificationPlugin:
 				cfg.ui.user_scihub_lineEdit.setText(cfg.SciHubUser)
 				sciHubPsw = cfg.utls.decryptPassword(cfg.SciHubPass)
 				cfg.ui.password_scihub_lineEdit.setText(sciHubPsw)
-			except Exception, err:
+			except Exception as err:
 				# logger
 				cfg.utls.logCondition(str(__name__) + "-" + (cfg.inspectSCP.stack()[0][3])+ " " + cfg.utls.lineOfCode(), " ERROR exception: " + str(err))
 			# reload layers in combos
@@ -648,7 +648,7 @@ class SemiAutomaticClassificationPlugin:
 			cfg.ui.LCS_tableWidget.cellChanged.connect(cfg.LCSignT.editedThresholdTable)
 			cfg.ui.LCS_tableWidget.horizontalHeader().sectionClicked.connect(cfg.LCSignT.orderedTable)
 			cfg.ui.automatic_threshold_pushButton_2.clicked.connect(cfg.LCSignT.setAllWeightsVariance)
-			# connect to activate pointer 
+			# connect to activate pointer
 			cfg.ui.LCS_pointerButton.clicked.connect(cfg.LCSignT.pointerActive)
 			cfg.ui.LCS_ROI_button.clicked.connect(cfg.LCSignT.ROIThreshold)
 			cfg.ui.set_min_max_Button.clicked.connect(cfg.LCSignT.setMinimumMaximum)
@@ -746,9 +746,9 @@ class SemiAutomaticClassificationPlugin:
 			cfg.uidc.help_toolButton_2.clicked.connect(cfg.ipt.askHelp)
 			# button new shapefile
 			cfg.uidc.button_new_input.clicked.connect(cfg.classD.createInput)
-			# connect to save to shapefile 
+			# connect to save to shapefile
 			cfg.uidc.button_Save_ROI.clicked.connect(cfg.classD.saveROItoShapefile)
-			# connect to undo save ROI 
+			# connect to undo save ROI
 			cfg.uidc.undo_save_Button.clicked.connect(cfg.classD.undoSaveROI)
 			# connect the signature calculation checkBox
 			cfg.uidc.signature_checkBox.stateChanged.connect(cfg.classD.signatureCheckbox)
@@ -770,31 +770,31 @@ class SemiAutomaticClassificationPlugin:
 			# connect to merge signatures
 			cfg.uidc.merge_signature_toolButton.clicked.connect(cfg.classD.mergeSelectedSignatures)
 			cfg.uidc.calculate_signature_toolButton.clicked.connect(cfg.classD.calculateSignatures)
-			# connect the ROI macroclass ID	
+			# connect the ROI macroclass ID
 			cfg.uidc.ROI_Macroclass_ID_spin.valueChanged.connect(cfg.classD.setROIMacroID)
-			# connect the ROI Macroclass 
+			# connect the ROI Macroclass
 			cfg.uidc.ROI_Macroclass_line.editingFinished.connect(cfg.classD.roiMacroclassInfo)
 			# custom expression
 			cfg.uidc.custom_index_lineEdit.editingFinished.connect(cfg.classD.customExpressionEdited)
 			# connect the ROI Class ID
 			cfg.uidc.ROI_ID_spin.valueChanged.connect(cfg.classD.setROIID)
-			# connect the ROI Class 
+			# connect the ROI Class
 			cfg.uidc.ROI_Class_line.editingFinished.connect(cfg.classD.roiClassInfo)
 			# connect the rapid ROI checkBox
 			cfg.uidc.display_cursor_checkBox.stateChanged.connect(cfg.classD.vegetationIndexCheckbox)
-			# connect the vegetation index combo	
+			# connect the vegetation index combo
 			cfg.uidc.vegetation_index_comboBox.currentIndexChanged.connect(cfg.classD.vegetationIndexName)
 			# connect the rapid ROI checkBox
 			cfg.uidc.rapid_ROI_checkBox.stateChanged.connect(cfg.classD.rapidROICheckbox)
 			# connect the vegetation index display checkbox
 			cfg.uidc.rapidROI_band_spinBox.valueChanged.connect(cfg.classD.rapidROIband)
-			# connect to algorithm weight button 
+			# connect to algorithm weight button
 			cfg.uidc.algorithm_weight_button.clicked.connect(cfg.utls.algorithmWeighTab)
-			# connect to threshold button 
+			# connect to threshold button
 			cfg.uidc.algorithm_threshold_button.clicked.connect(cfg.utls.algorithmThresholdTab)
-			# connect to LCS threshold button 
+			# connect to LCS threshold button
 			cfg.uidc.LC_signature_button.clicked.connect(cfg.utls.LCSThresholdTab)
-			# connect the algorithm combo	
+			# connect the algorithm combo
 			cfg.uidc.algorithm_combo.currentIndexChanged.connect(cfg.classD.algorithmName)
 			# connect the algorithm threshold
 			cfg.uidc.alg_threshold_SpinBox.valueChanged.connect(cfg.classD.algorithmThreshold)
@@ -824,7 +824,7 @@ class SemiAutomaticClassificationPlugin:
 			cfg.uidc.resetQmlButton.clicked.connect(cfg.classD.resetQmlStyle)
 			# connect to reset mask button
 			cfg.uidc.resetMaskButton.clicked.connect(cfg.classD.resetMask)
-			""" Spectral signature plot """	
+			""" Spectral signature plot """
 			# connect the sigma checkBox
 			cfg.uisp.sigma_checkBox.stateChanged.connect(cfg.spSigPlot.sigmaCheckbox)
 			cfg.uisp.band_lines_checkBox.stateChanged.connect(cfg.spSigPlot.refreshPlot)
@@ -841,7 +841,7 @@ class SemiAutomaticClassificationPlugin:
 			cfg.uisp.value_range_pushButton.clicked.connect(cfg.spSigPlot.editValueRange)
 			cfg.uisp.set_min_max_Button.clicked.connect(cfg.spSigPlot.setMinimumMaximum)
 			cfg.uisp.automatic_threshold_pushButton_2.clicked.connect(cfg.spSigPlot.setAllWeightsVariance)
-			# connect to activate pointer 
+			# connect to activate pointer
 			cfg.uisp.LCS_pointerButton_2.clicked.connect(cfg.spSigPlot.pointerActive)
 			cfg.uisp.LCS_ROI_button_2.clicked.connect(cfg.spSigPlot.ROIThreshold)
 			# undo threshold
@@ -859,7 +859,7 @@ class SemiAutomaticClassificationPlugin:
 			# connect to signature plot list double click
 			cfg.uisp.signature_list_plot_tableWidget.doubleClicked.connect(cfg.spSigPlot.signatureListDoubleClick)
 			""" Scatter plot tab """
-			# connect to scatter plot button 
+			# connect to scatter plot button
 			cfg.uiscp.scatter_ROI_Button.clicked.connect(cfg.scaPlT.scatterPlotCalc)
 			# connect to Band X spinbox
 			cfg.uiscp.bandX_spinBox.valueChanged.connect(cfg.scaPlT.bandXPlot)
@@ -925,7 +925,7 @@ class SemiAutomaticClassificationPlugin:
 			cfg.ui.toolButton_reload_7.clicked.connect(cfg.clipMulti.rasterNameList)
 			# connect to select all rasters button
 			cfg.ui.select_all_rasters_Button_2.clicked.connect(cfg.clipMulti.selectAllRasters)
-			# connect to activate UL pointer 
+			# connect to activate UL pointer
 			cfg.ui.selectUL_toolButton.clicked.connect(cfg.clipMulti.pointerActive)
 			# connect to refresh shape button
 			cfg.ui.toolButton_reload_8.clicked.connect(cfg.clipMulti.refreshShapeClip)
@@ -1203,13 +1203,13 @@ class SemiAutomaticClassificationPlugin:
 				cfg.osSCP.remove(cfg.plgnDir + "/firstrun")
 			else:
 				dateV = cfg.datetimeSCP.datetime.now()
-				dStr = dateV.strftime("%Y_%m_%d") 
+				dStr = dateV.strftime("%Y_%m_%d")
 				cfg.ipt.welcomeText("https://semiautomaticgit.github.io/SemiAutomaticClassificationPluginWelcome/welcome" + "_" + dStr + ".html", "https://semiautomaticgit.github.io/SemiAutomaticClassificationPluginWelcome/welcome.html")
 			cfg.utls.cleanOldTempDirectory()
 		else:
 			dockclassdlg = DockClassDialog(qgisUtils.iface.mainWindow(), qgisUtils.iface)
-			qgisUtils.iface.removeDockWidget(dockclassdlg)			
-			
+			qgisUtils.iface.removeDockWidget(dockclassdlg)
+
 	# save signature list when saving project
 	def projectSaved(self):
 		if cfg.skipProjectSaved == "No":
@@ -1219,7 +1219,7 @@ class SemiAutomaticClassificationPlugin:
 				cfg.classD.saveMemToSHP(cfg.shpLay )
 				cfg.utls.createBackupFile(cfg.scpFlPath)
 				cfg.utls.zipDirectoryInFile(cfg.scpFlPath, cfg.inptDir)
-		
+
 	# new project
 	def newProjectLoaded(self):
 		cfg.projPath = cfg.qgisCoreSCP.QgsProject.instance().fileName()
@@ -1291,7 +1291,7 @@ class SemiAutomaticClassificationPlugin:
 		cfg.uidc.ROI_Macroclass_line.setText("MC 1")
 		try:
 			cfg.uidc.custom_index_lineEdit.setText("")
-		except Exception, err:
+		except Exception as err:
 			# logger
 			cfg.utls.logCondition(str(__name__) + "-" + (cfg.inspectSCP.stack()[0][3])+ " " + cfg.utls.lineOfCode(), " ERROR exception: " + str(err))
 		# RGB list
@@ -1301,7 +1301,7 @@ class SemiAutomaticClassificationPlugin:
 		cfg.rgb_combo.addItem("4-3-2")
 		cfg.RGBList = eval(cfg.RGBListDef)
 		cfg.RGBLT.RGBListTable(cfg.RGBList)
-		
+
 	# read project variables
 	def projectLoaded(self):
 		cfg.projPath = cfg.qgisCoreSCP.QgsProject.instance().fileName()
@@ -1446,7 +1446,7 @@ class SemiAutomaticClassificationPlugin:
 				idU = cfg.ui.unit_combo.findText(bSU)
 				cfg.ui.unit_combo.setCurrentIndex(idU)
 				t.blockSignals(False)
-			except Exception, err:
+			except Exception as err:
 				t = cfg.ui.tableWidget
 				t.blockSignals(False)
 				# logger
@@ -1462,7 +1462,7 @@ class SemiAutomaticClassificationPlugin:
 		cfg.classD.openInput()
 		# RGB list
 		cfg.RGBLT.RGBListTable(cfg.RGBList)
-		
+
 	# run
 	def run(self):
 		# logger
@@ -1478,8 +1478,8 @@ class SemiAutomaticClassificationPlugin:
 		pointer_result = cfg.dlg.exec_()
 		# logger
 		cfg.utls.logCondition(str(__name__) + "-" + str(cfg.inspectSCP.stack()[0][3])+ " " + cfg.utls.lineOfCode(), "CLOSE SESSION")
-		
-	# remove plugin menu and icon	
+
+	# remove plugin menu and icon
 	def unload(self):
 		try:
 			qgisUtils.iface.removeDockWidget(cfg.dockclassdlg)
