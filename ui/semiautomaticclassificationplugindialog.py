@@ -142,7 +142,7 @@ class SemiAutomaticClassificationPluginDialog(QtWidgets.QDialog):
 # create the dialog
 class DockClassDialog(QtWidgets.QDockWidget):
 	def __init__(self, parent, iface):
-		QtGui.QDockWidget.__init__(self)
+		QtWidgets.QDockWidget.__init__(self)
 		# initialize plugin directory
 		try:
 			self.plgnDir = cfg.QFileInfoSCP(cfg.qgisCoreSCP.QgsApplication.qgisUserDbFilePath()).path() + "/python/plugins/SemiAutomaticClassificationPlugin"

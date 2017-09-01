@@ -44,7 +44,7 @@ import numpy as np
 import urllib
 import urllib.request
 import ssl
-from cookielib import CookieJar
+from http.cookiejar import CookieJar
 import itertools
 import zipfile
 import tarfile
@@ -56,8 +56,9 @@ from xml.dom import minidom
 import hashlib
 # Import the PyQt libraries
 from qgis.PyQt import QtCore, QtGui
-from qgis.PyQt.QtCore import Qt, QObject, SIGNAL, QFileInfo, QSettings, QDir, QDate, QVariant
-from qgis.PyQt.QtGui import QApplication
+from qgis.PyQt.QtCore import Qt, QObject , QFileInfo, QSettings, QDir, QDate, QVariant
+from qgis.PyQt.QtCore import pyqtSignal as SIGNAL
+from qgis.PyQt.QtWidgets import QApplication
 from qgis.PyQt.QtNetwork import QNetworkRequest
 # Import the QGIS libraries
 import qgis.core as qgisCore
@@ -67,74 +68,74 @@ from osgeo import gdal
 from osgeo import ogr
 from osgeo import osr
 # Initialize Qt ui
-import ui.resources_rc
-from ui.ui_semiautomaticclassificationplugin import Ui_SemiAutomaticClassificationPlugin
-from ui.semiautomaticclassificationplugindialog import SemiAutomaticClassificationPluginDialog
-from ui.semiautomaticclassificationplugindialog import SpectralSignatureDialog
-from ui.semiautomaticclassificationplugindialog import ScatterPlotDialog
-from ui.semiautomaticclassificationplugindialog import DockClassDialog
+from . ui import resources_rc
+from . ui.ui_semiautomaticclassificationplugin import Ui_SemiAutomaticClassificationPlugin
+from . ui.semiautomaticclassificationplugindialog import SemiAutomaticClassificationPluginDialog
+from . ui.semiautomaticclassificationplugindialog import SpectralSignatureDialog
+from . ui.semiautomaticclassificationplugindialog import ScatterPlotDialog
+from . ui.semiautomaticclassificationplugindialog import DockClassDialog
 # Import plugin version
-from __init__ import version as semiautomaticclassVersion
+from . __init__ import version as semiautomaticclassVersion
 global PluginCheck
 PluginCheck = "Yes"
 try:
-	import core.config as cfg
+	from core import config as cfg
 except:
 	PluginCheck = "No"
 if PluginCheck == "Yes":
 	try:
-		import core.messages as msgs
-		from core.utils import Utils
-		from core.signature_importer import Signature_Importer
-		from roidock.manualroi import ManualROI
-		from roidock.regionroi import RegionROI
-		from maininterface.downloadlandsatpointer import DownloadLandsatPointer
-		from maininterface.downloadasterpointer import DownloadASTERPointer
-		from maininterface.downloadmodispointer import DownloadMODISPointer
-		from maininterface.downloadsentinelpointer import DownloadSentinelPointer
-		from roidock.roidock import RoiDock
-		from spectralsignature.spectralsignatureplot import SpectralSignaturePlot
-		from spectralsignature.scatter_plot import Scatter_Plot
-		from classificationdock.classificationdock import ClassificationDock
-		from classificationdock.classificationpreview import ClassificationPreview
-		from maininterface.multipleroiTab import MultipleROITab
-		from spectralsignature.usgs_spectral_lib import USGS_Spectral_Lib
-		from maininterface.landsatTab import LandsatTab
-		from maininterface.asterTab import ASTERTab
-		from maininterface.modisTab import MODISTab
-		from maininterface.sentinelTab import Sentinel2Tab
-		from maininterface.accuracy import Accuracy
-		from maininterface.crossclassificationTab import CrossClassification
-		from maininterface.splitTab import SplitTab
-		from maininterface.pcaTab import PcaTab
-		from maininterface.vectortorasterTab import VectorToRasterTab
-		from maininterface.bandsetTab import BandsetTab
-		from maininterface.algorithmWeightTab import AlgWeightTab
-		from maininterface.signatureThresholdTab import SigThresholdTab
-		from maininterface.LCSignatureThresholdTab import LCSigThresholdTab
-		from maininterface.rgblistTab import RGBListTab
-		from maininterface.LCSignaturePixel import LCSigPixel
-		from maininterface.LCSignaturePixel2 import LCSigPixel2
-		from maininterface.bandcalcTab import BandCalcTab
-		from maininterface.batchTab import BatchTab
-		from maininterface.clipmultiplerasters import ClipMultipleRasters
-		from maininterface.stackrasterbands import StackRasterBands
-		from maininterface.editraster import EditRaster
-		from maininterface.sieveTab import SieveRaster
-		from maininterface.erosionTab import ErosionRaster
-		from maininterface.dilationTab import DilationRaster
-		from maininterface.downloadlandsatimages import DownloadLandsatImages
-		from maininterface.downloadasterimages import DownloadASTERImages
-		from maininterface.downloadmodisimages import DownloadMODISImages
-		from maininterface.downloadsentinelimages import DownloadSentinelImages
-		from maininterface.clipmultiplerasterspointer import ClipMultiplerastersPointer
-		from maininterface.landcoverchange import LandCoverChange
-		from maininterface.classreportTab import ClassReportTab
-		from maininterface.classtovectorTab import ClassToVectorTab
-		from maininterface.reclassificationTab import ReclassificationTab
-		from maininterface.settings import Settings
-		from core.input import Input
-		from ui.ui_utils import Ui_Utils
+		from core import messages as msgs
+		from . core.utils import Utils
+		from . core.signature_importer import Signature_Importer
+		from . roidock.manualroi import ManualROI
+		from . roidock.regionroi import RegionROI
+		from . maininterface.downloadlandsatpointer import DownloadLandsatPointer
+		from . maininterface.downloadasterpointer import DownloadASTERPointer
+		from.  maininterface.downloadmodispointer import DownloadMODISPointer
+		from . maininterface.downloadsentinelpointer import DownloadSentinelPointer
+		from . roidock.roidock import RoiDock
+		from . spectralsignature.spectralsignatureplot import SpectralSignaturePlot
+		from . spectralsignature.scatter_plot import Scatter_Plot
+		from . classificationdock.classificationdock import ClassificationDock
+		from . classificationdock.classificationpreview import ClassificationPreview
+		from . maininterface.multipleroiTab import MultipleROITab
+		from . spectralsignature.usgs_spectral_lib import USGS_Spectral_Lib
+		from . maininterface.landsatTab import LandsatTab
+		from . maininterface.asterTab import ASTERTab
+		from . maininterface.modisTab import MODISTab
+		from . maininterface.sentinelTab import Sentinel2Tab
+		from . maininterface.accuracy import Accuracy
+		from . maininterface.crossclassificationTab import CrossClassification
+		from . maininterface.splitTab import SplitTab
+		from . maininterface.pcaTab import PcaTab
+		from . maininterface.vectortorasterTab import VectorToRasterTab
+		from . maininterface.bandsetTab import BandsetTab
+		from . maininterface.algorithmWeightTab import AlgWeightTab
+		from . maininterface.signatureThresholdTab import SigThresholdTab
+		from . maininterface.LCSignatureThresholdTab import LCSigThresholdTab
+		from . maininterface.rgblistTab import RGBListTab
+		from . maininterface.LCSignaturePixel import LCSigPixel
+		from . maininterface.LCSignaturePixel2 import LCSigPixel2
+		from . maininterface.bandcalcTab import BandCalcTab
+		from . maininterface.batchTab import BatchTab
+		from . maininterface.clipmultiplerasters import ClipMultipleRasters
+		from . maininterface.stackrasterbands import StackRasterBands
+		from . maininterface.editraster import EditRaster
+		from . maininterface.sieveTab import SieveRaster
+		from . maininterface.erosionTab import ErosionRaster
+		from . maininterface.dilationTab import DilationRaster
+		from . maininterface.downloadlandsatimages import DownloadLandsatImages
+		from . maininterface.downloadasterimages import DownloadASTERImages
+		from . maininterface.downloadmodisimages import DownloadMODISImages
+		from . maininterface.downloadsentinelimages import DownloadSentinelImages
+		from . maininterface.clipmultiplerasterspointer import ClipMultiplerastersPointer
+		from . maininterface.landcoverchange import LandCoverChange
+		from . maininterface.classreportTab import ClassReportTab
+		from . maininterface.classtovectorTab import ClassToVectorTab
+		from . maininterface.reclassificationTab import ReclassificationTab
+		from . maininterface.settings import Settings
+		from . core.input import Input
+		from . ui.ui_utils import Ui_Utils
 	except:
 		PluginCheck = "No"
 		qgisUtils.iface.messageBar().pushMessage("Semi-Automatic Classification Plugin", QApplication.translate("semiautomaticclassificationplugin", "Please, restart QGIS for executing the Semi-Automatic Classification Plugin"), level=QgsMessageBar.INFO)
