@@ -7,7 +7,7 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+from qgis.PyQt import QtCore, QtGui
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -8311,4 +8311,4 @@ class Ui_SemiAutomaticClassificationPlugin(object):
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with Semi-Automatic Classification Plugin. If not, see &lt;</span><a href=\"http://www.gnu.org/licenses/\"><span style=\" font-size:8pt; text-decoration: underline; color:#0000ff;\">http://www.gnu.org/licenses/</span></a><span style=\" font-size:8pt;\">&gt;.</span></p></body></html>", None))
         self.toolButton_plugin.setTabText(self.toolButton_plugin.indexOf(self.tab_About), _translate("SemiAutomaticClassificationPlugin", "About", None))
 
-import resources_rc
+from . import resources_rc

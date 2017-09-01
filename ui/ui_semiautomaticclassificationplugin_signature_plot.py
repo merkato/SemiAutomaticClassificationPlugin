@@ -7,7 +7,7 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+from qgis.PyQt import QtCore, QtGui
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -503,5 +503,5 @@ class Ui_SpectralSignaturePlot(object):
         self.toolBox.setItemText(self.toolBox.indexOf(self.page_2), _translate("SpectralSignaturePlot", "Signature details", None))
         self.toolBox.setItemText(self.toolBox.indexOf(self.page_3), _translate("SpectralSignaturePlot", "Spectral distances", None))
 
-from sigwidget2 import SigWidget2
-import resources_rc
+from . sigwidget2 import SigWidget2
+from . import resources_rc

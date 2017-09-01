@@ -3,7 +3,7 @@
 /**************************************************************************************************************************
  SemiAutomaticClassificationPlugin
 
- The Semi-Automatic Classification Plugin for QGIS allows for the supervised classification of remote sensing images, 
+ The Semi-Automatic Classification Plugin for QGIS allows for the supervised classification of remote sensing images,
  providing tools for the download, the preprocessing and postprocessing of images.
 
 							 -------------------
@@ -11,33 +11,33 @@
 		copyright			: (C) 2012-2017 by Luca Congedo
 		email				: ing.congedoluca@gmail.com
 **************************************************************************************************************************/
- 
+
 /**************************************************************************************************************************
  *
  * This file is part of Semi-Automatic Classification Plugin
- * 
- * Semi-Automatic Classification Plugin is free software: you can redistribute it and/or modify it under 
- * the terms of the GNU General Public License as published by the Free Software Foundation, 
+ *
+ * Semi-Automatic Classification Plugin is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software Foundation,
  * version 3 of the License.
- * 
- * Semi-Automatic Classification Plugin is distributed in the hope that it will be useful, 
- * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
- * FITNESS FOR A PARTICULAR PURPOSE. 
+ *
+ * Semi-Automatic Classification Plugin is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License along with 
- * Semi-Automatic Classification Plugin. If not, see <http://www.gnu.org/licenses/>. 
- * 
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * Semi-Automatic Classification Plugin. If not, see <http://www.gnu.org/licenses/>.
+ *
 **************************************************************************************************************************/
 
 """
 
 # Import PyQt libraries
-from PyQt4 import QtGui
+from qgis.PyQt import QtGui, QtWidgets
 # Import FigureCanvas
 import matplotlib
 try:
-	matplotlib.use("Qt4Agg")
+	matplotlib.use("Qt5Agg")
 except:
 	pass
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigCanvas
@@ -57,7 +57,7 @@ class SigCanvas(FigCanvas):
 		self.ax.set_yticks([])
 		self.ax.set_aspect('equal', 'datalim')
 
-class ScatterWidget2(QtGui.QWidget):
+class ScatterWidget2(QtWidgets.QWidget):
 	def __init__(self, parent = None):
 		# Widget initialization
 		QtGui.QWidget.__init__(self, parent)

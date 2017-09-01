@@ -7,7 +7,7 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+from qgis.PyQt import QtCore, QtGui
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -464,5 +464,5 @@ class Ui_ScatterPlot(object):
         self.plot_image_pushButton.setToolTip(_translate("ScatterPlot", "<html><head/><body><p>Calculate scatter plot from entire image</p></body></html>", None))
         self.label_25.setText(_translate("ScatterPlot", " Scatter list", None))
 
-from scatterwidget2 import ScatterWidget2
-import resources_rc
+from .scatterwidget2 import ScatterWidget2
+from . import resources_rc

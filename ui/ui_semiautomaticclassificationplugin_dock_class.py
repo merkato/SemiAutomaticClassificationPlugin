@@ -7,7 +7,7 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+from qgis.PyQt import QtCore, QtGui
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -1014,4 +1014,4 @@ class Ui_DockClass(object):
         self.toolBox.setItemText(self.toolBox.indexOf(self.page_4), _translate("DockClass", " Classification output", None))
         self.SCP_toolBox.setItemText(self.SCP_toolBox.indexOf(self.page_7), _translate("DockClass", "Classification dock", None))
 
-import resources_rc
+from . import resources_rc
